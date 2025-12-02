@@ -1,224 +1,345 @@
-import React, { useState } from 'react';
-import type { BookingForm } from '../types';
+import { useState } from 'react'
 
-const Booking: React.FC = () => {
-  const [formData, setFormData] = useState<BookingForm>({
+const Booking = () => {
+  const [step, setStep] = useState(1)
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     bikeType: '',
     serviceType: '',
-    preferredDate: '',
-    preferredTime: '',
+    date: '',
+    time: '',
     description: ''
-  });
+  })
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitMessage, setSubmitMessage] = useState('');
+  const bikeTypes = [
+    { value: 'road', label: 'Road Bike', emoji: '🚴' },
+    { value: 'mountain', label: 'Mountain', emoji: '🏔️' },
+    { value: 'hybrid', label: 'Hybrid', emoji: '🚲' },
+    { value: 'electric', label: 'E-Bike', emoji: '⚡' },
+    { value: 'bmx', label: 'BMX', emoji: '🤸' },
+    { value: 'kids', label: 'Kids', emoji: '👶' },
+  ]
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      console.log('Booking submitted:', formData);
-      setIsSubmitting(false);
-      setSubmitMessage('Booking submitted successfully! We will contact you soon to confirm.');
-      
-      // Reset form
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        bikeType: '',
-        serviceType: '',
-        preferredDate: '',
-        preferredTime: '',
-        description: ''
-      });
-    }, 2000);
-  };
+  const services = [
+    { value: 'basic', label: 'Basic Tune-up', price: '$49', emoji: '🔧' },
+    { value: 'premium', label: 'Premium Service', price: '$99', emoji: '✨' },
+    { value: 'overhaul', label: 'Full Overhaul', price: '$149', emoji: '🔄' },
+    { value: 'emergency', label: 'Emergency Fix', price: '$79', emoji: '🚨' },
+  ]
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
+  const handleNext = () => {
+    if (step < 4) setStep(step + 1)
+  }
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1)
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    console.log('Booking submitted:', formData)
+    setStep(4) // Success step
+  }
+
+  const updateFormData = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold mb-4">Book a Service</h1>
-          <p className="text-lg text-gray-600">
-            Fill out the form below to schedule your bike repair service
-          </p>
+    <div className="container-mobile py-8 pb-24">
+      {/* Progress Bar */}
+      <div className="mb-8">
+        <div className="flex justify-between mb-4">
+          {[1, 2, 3, 4].map((s) => (
+            <div key={s} className="flex items-center">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                step >= s ? 'bg-[--theme-primary] text-white' : 'bg-[color-mix(in_srgb,var(--theme-neutral)_20%,transparent)]'
+              }`}>
+                {s === 4 ? '🎉' : s}
+              </div>
+              {s < 4 && (
+                <div className={`w-12 h-1 ${step > s ? 'bg-[--theme-primary]' : 'bg-[color-mix(in_srgb,var(--theme-neutral)_20%,transparent)]'}`} />
+              )}
+            </div>
+          ))}
         </div>
-        
-        {submitMessage && (
-          <div className="alert alert-success mb-6">
-            <div>
-              <span>{submitMessage}</span>
-            </div>
-          </div>
-        )}
+        <div className="flex justify-between text-sm px-2">
+          <span>Bike</span>
+          <span>Service</span>
+          <span>Details</span>
+          <span>Confirm</span>
+        </div>
+      </div>
 
-        <form onSubmit={handleSubmit} className="card bg-base-200 shadow-xl p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {/* Personal Information */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Full Name *</span>
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                className="input input-bordered"
-                required
-                placeholder="John Doe"
-              />
-            </div>
-            
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Email *</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input input-bordered"
-                required
-                placeholder="john@example.com"
-              />
-            </div>
-            
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Phone *</span>
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="input input-bordered"
-                required
-                placeholder="(555) 123-4567"
-              />
-            </div>
-            
-            {/* Bike Information */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Bike Type *</span>
-              </label>
-              <select
-                name="bikeType"
-                value={formData.bikeType}
-                onChange={handleChange}
-                className="select select-bordered"
-                required
+      {/* Step 1: Bike Type */}
+      {step === 1 && (
+        <div className="animate-fadeIn">
+          <h2 className="text-2xl font-bold mb-6 text-center">Choose Your Bike Type</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {bikeTypes.map((bike) => (
+              <button
+                key={bike.value}
+                type="button"
+                onClick={() => {
+                  updateFormData('bikeType', bike.value)
+                  handleNext()
+                }}
+                className={`card touch-button h-32 ${
+                  formData.bikeType === bike.value 
+                    ? 'border-2 border-[--theme-primary] bg-[color-mix(in_srgb,var(--theme-primary)_10%,transparent)]' 
+                    : 'border border-transparent hover:border-[color-mix(in_srgb,var(--theme-primary)_50%,transparent)]'
+                }`}
               >
-                <option value="">Select Bike Type</option>
-                <option value="road">Road Bike</option>
-                <option value="mountain">Mountain Bike</option>
-                <option value="hybrid">Hybrid Bike</option>
-                <option value="electric">Electric Bike</option>
-                <option value="bmx">BMX</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Service Type *</span>
-              </label>
-              <select
-                name="serviceType"
-                value={formData.serviceType}
-                onChange={handleChange}
-                className="select select-bordered"
-                required
-              >
-                <option value="">Select Service</option>
-                <option value="basic-tuneup">Basic Tune-up</option>
-                <option value="premium-tuneup">Premium Tune-up</option>
-                <option value="overhaul">Overhaul Service</option>
-                <option value="flat-tire">Flat Tire Repair</option>
-                <option value="brakes">Brake Service</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            
-            {/* Scheduling */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Preferred Date *</span>
-              </label>
-              <input
-                type="date"
-                name="preferredDate"
-                value={formData.preferredDate}
-                onChange={handleChange}
-                className="input input-bordered"
-                required
-                min={new Date().toISOString().split('T')[0]}
-              />
-            </div>
-            
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-semibold">Preferred Time *</span>
-              </label>
-              <select
-                name="preferredTime"
-                value={formData.preferredTime}
-                onChange={handleChange}
-                className="select select-bordered"
-                required
-              >
-                <option value="">Select Time</option>
-                <option value="morning">Morning (9AM - 12PM)</option>
-                <option value="afternoon">Afternoon (12PM - 5PM)</option>
-                <option value="evening">Evening (5PM - 7PM)</option>
-              </select>
-            </div>
+                <div className="card-body items-center justify-center p-4">
+                  <span className="emoji-icon text-4xl mb-2">{bike.emoji}</span>
+                  <span className="font-medium">{bike.label}</span>
+                </div>
+              </button>
+            ))}
           </div>
-          
-          {/* Description */}
-          <div className="form-control mt-6">
-            <label className="label">
-              <span className="label-text font-semibold">Additional Description</span>
-            </label>
-            <textarea
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              className="textarea textarea-bordered h-32"
-              placeholder="Describe any specific issues, concerns, or special requests..."
-            />
+        </div>
+      )}
+
+      {/* Step 2: Service */}
+      {step === 2 && (
+        <div className="animate-fadeIn">
+          <h2 className="text-2xl font-bold mb-6 text-center">Select Service</h2>
+          <div className="space-y-4">
+            {services.map((service) => (
+              <button
+                key={service.value}
+                type="button"
+                onClick={() => {
+                  updateFormData('serviceType', service.value)
+                  handleNext()
+                }}
+                className={`card w-full touch-button ${
+                  formData.serviceType === service.value 
+                    ? 'border-2 border-[--theme-primary] bg-[color-mix(in_srgb,var(--theme-primary)_10%,transparent)]' 
+                    : 'border border-transparent hover:border-[color-mix(in_srgb,var(--theme-primary)_50%,transparent)]'
+                }`}
+              >
+                <div className="card-body p-4">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                      <span className="emoji-icon text-2xl">{service.emoji}</span>
+                      <div className="text-left">
+                        <h3 className="font-bold text-lg">{service.label}</h3>
+                      </div>
+                    </div>
+                    <div className="text-2xl font-bold text-[--theme-primary]">
+                      {service.price}
+                    </div>
+                  </div>
+                </div>
+              </button>
+            ))}
           </div>
+        </div>
+      )}
+
+      {/* Step 3: Details */}
+      {step === 3 && (
+        <form onSubmit={handleSubmit} className="animate-fadeIn">
+          <h2 className="text-2xl font-bold mb-6 text-center">Your Details</h2>
           
-          {/* Submit Button */}
-          <div className="form-control mt-8">
-            <button 
-              type="submit" 
-              className={`btn btn-primary btn-lg ${isSubmitting ? 'loading' : ''}`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Submit Booking'}
-            </button>
+          <div className="space-y-4">
+            {/* Contact Info */}
+            <div className="card bg-base-200">
+              <div className="card-body p-4 space-y-4">
+                <input
+                  type="text"
+                  placeholder="Full Name"
+                  value={formData.name}
+                  onChange={(e) => updateFormData('name', e.target.value)}
+                  className="input input-bordered w-full touch-button"
+                  required
+                />
+                
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    type="tel"
+                    placeholder="Phone"
+                    value={formData.phone}
+                    onChange={(e) => updateFormData('phone', e.target.value)}
+                    className="input input-bordered w-full touch-button"
+                    required
+                  />
+                  
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    value={formData.email}
+                    onChange={(e) => updateFormData('email', e.target.value)}
+                    className="input input-bordered w-full touch-button"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Date & Time */}
+            <div className="card bg-base-200">
+              <div className="card-body p-4 space-y-4">
+                <input
+                  type="date"
+                  value={formData.date}
+                  onChange={(e) => updateFormData('date', e.target.value)}
+                  className="input input-bordered w-full touch-button"
+                  required
+                  min={new Date().toISOString().split('T')[0]}
+                />
+                
+                <div>
+                  <label className="label-text block mb-2 font-semibold">Preferred Time</label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {['🌅 Morning', '☀️ Afternoon', '🌆 Evening'].map((time) => (
+                      <button
+                        key={time}
+                        type="button"
+                        onClick={() => updateFormData('time', time.split(' ')[0])}
+                        className={`btn btn-sm ${
+                          formData.time === time.split(' ')[0] ? 'btn-primary' : 'btn-outline'
+                        } touch-button`}
+                      >
+                        {time}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Description */}
+            <div className="card bg-base-200">
+              <div className="card-body p-4">
+                <textarea
+                  placeholder="Special instructions or issues..."
+                  value={formData.description}
+                  onChange={(e) => updateFormData('description', e.target.value)}
+                  className="textarea textarea-bordered w-full h-32 touch-button"
+                />
+              </div>
+            </div>
+
+            {/* Summary */}
+            {formData.bikeType && formData.serviceType && (
+              <div className="card bg-gradient-to-r from-[color-mix(in_srgb,var(--theme-primary)_10%,transparent)] to-[color-mix(in_srgb,var(--theme-secondary)_10%,transparent)]">
+                <div className="card-body p-4">
+                  <h3 className="font-bold mb-2">Booking Summary</h3>
+                  <div className="space-y-1 text-sm">
+                    <div className="flex justify-between">
+                      <span>Bike:</span>
+                      <span className="font-semibold">
+                        {bikeTypes.find(b => b.value === formData.bikeType)?.label}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Service:</span>
+                      <span className="font-semibold">
+                        {services.find(s => s.value === formData.serviceType)?.label}
+                      </span>
+                    </div>
+                    {formData.date && (
+                      <div className="flex justify-between">
+                        <span>Date:</span>
+                        <span className="font-semibold">
+                          {new Date(formData.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="flex gap-4">
+              <button
+                type="button"
+                onClick={handleBack}
+                className="btn btn-outline flex-1 touch-button"
+              >
+                ← Back
+              </button>
+              <button
+                type="submit"
+                className="btn btn-primary flex-1 touch-button shadow-lg"
+              >
+                Confirm Booking →
+              </button>
+            </div>
           </div>
         </form>
-      </div>
-    </div>
-  );
-};
+      )}
 
-export default Booking;
+      {/* Step 4: Success */}
+      {step === 4 && (
+        <div className="text-center animate-fadeIn py-12">
+          <div className="emoji-icon text-8xl mb-6 animate-bounce-slow">🎉</div>
+          <h2 className="text-3xl font-bold mb-4">Booking Confirmed!</h2>
+          <p className="text-lg mb-6">
+            Thank you for choosing BikeRepair Pro! We'll contact you soon to confirm your appointment.
+          </p>
+          
+          <div className="card bg-base-200 mb-6">
+            <div className="card-body">
+              <h3 className="font-bold mb-2">Your Appointment</h3>
+              <div className="space-y-2 text-left">
+                <div className="flex justify-between">
+                  <span>Service:</span>
+                  <span className="font-semibold">
+                    {services.find(s => s.value === formData.serviceType)?.label}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Date:</span>
+                  <span className="font-semibold">
+                    {formData.date && new Date(formData.date).toLocaleDateString()}
+                  </span>
+                </div>
+                <div className="flex justify-between">
+                  <span>Time:</span>
+                  <span className="font-semibold">
+                    {formData.time || 'To be confirmed'}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4">
+            <a
+              href="/"
+              className="btn btn-primary w-full touch-button"
+            >
+              Back to Home
+            </a>
+            <button
+              onClick={() => {
+                setStep(1)
+                setFormData({
+                  name: '',
+                  email: '',
+                  phone: '',
+                  bikeType: '',
+                  serviceType: '',
+                  date: '',
+                  time: '',
+                  description: ''
+                })
+              }}
+              className="btn btn-outline w-full touch-button"
+            >
+              Book Another Service
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
+export default Booking
