@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import PremiumNavbar from './components/premiumNavbar'
-import PremiumFooter from './components/premiumFooter'
+import BikerNavbar from './components/bikerNavbar'
+import BikerFooter from './components/bikerFooter'
 import Home from './pages/home'
 import Services from './pages/services'
 import Booking from './pages/booking'
@@ -11,8 +11,8 @@ import './index.css'
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-white">
-        <PremiumNavbar />
+      <div className="min-h-screen bg-black text-white">
+        <BikerNavbar />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -22,7 +22,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
-        <PremiumFooter />
+        <BikerFooter />
       </div>
     </Router>
   )
