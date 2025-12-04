@@ -5,6 +5,8 @@ export interface Service {
   price: string;
   duration: string;
   features: string[];
+  image: string;
+  popular?: boolean;
 }
 
 export interface BookingForm {
@@ -12,14 +14,33 @@ export interface BookingForm {
   email: string;
   phone: string;
   bikeType: string;
+  bikeBrand: string;
   serviceType: string;
   preferredDate: string;
   preferredTime: string;
   description: string;
 }
 
-export interface Booking extends BookingForm {
+export interface Testimonial {
   id: number;
-  status: string;
+  name: string;
+  role: string;
+  text: string;
+  bike: string;
+  rating: number;
+  image?: string;
+}
+
+export interface ContactForm {
+  name: string;
+  email: string;
+  phone: string;
+  subject: string;
+  message: string;
+}
+
+export interface AdminBooking extends BookingForm {
+  id: number;
+  status: 'pending' | 'confirmed' | 'in-progress' | 'completed' | 'cancelled';
   createdAt: string;
 }

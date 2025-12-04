@@ -1,4 +1,4 @@
-import { Bike, Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter, Wrench } from 'lucide-react'
+import { Bike, Phone, Mail, MapPin, Clock, Facebook, Instagram, Twitter } from 'lucide-react'
 
 const MotoFooter = () => {
   const quickLinks = [
@@ -12,11 +12,11 @@ const MotoFooter = () => {
 
   const services = [
     { label: 'Engine Repair', href: '/services' },
-    { label: 'Transmission Service', href: '/services' },
+    { label: 'Transmission', href: '/services' },
     { label: 'Brake System', href: '/services' },
-    { label: 'Suspension Tuning', href: '/services' },
+    { label: 'Suspension', href: '/services' },
     { label: 'Custom Builds', href: '/services' },
-    { label: 'Performance Upgrades', href: '/services' },
+    { label: 'Performance', href: '/services' },
   ]
 
   const contactInfo = [
@@ -140,7 +140,6 @@ const MotoFooter = () => {
               </div>
             </div>
 
-            {/* Newsletter */}
             <div>
               <h3 className="text-lg font-black text-white mb-4 uppercase">Garage Updates</h3>
               <form className="space-y-3">
