@@ -1,336 +1,132 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: motorcycle --default, dark --prefersdark;
+  themes: light --default;
 }
 
 :root {
-  font-family: 'Inter', 'Roboto Condensed', 'Montserrat', -apple-system, sans-serif;
+  font-family: 'Inter', -apple-system, sans-serif;
   line-height: 1.6;
-  font-weight: 500;
-  
-  /* Motorcycle Theme Colors */
-  --theme-jet-black: #0a0a0a;
-  --theme-engine-orange: #ff4500;
-  --theme-chrome-silver: #c0c0c0;
-  --theme-carbon-gray: #2a2a2a;
-  --theme-garage-gray: #1a1a1a;
-  --theme-white: #ffffff;
-  --theme-warning: #ffcc00;
-  
-  /* Gradients */
-  --gradient-exhaust: linear-gradient(135deg, #ff4500 0%, #ff6a00 50%, #ff4500 100%);
-  --gradient-chrome: linear-gradient(135deg, #e0e0e0 0%, #c0c0c0 50%, #a0a0a0 100%);
-  --gradient-carbon: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 50%, #0a0a0a 100%);
-  
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-@theme {
-  --color-primary: var(--theme-jet-black);
-  --color-secondary: var(--theme-engine-orange);
-  --color-accent: var(--theme-chrome-silver);
-  --color-warning: var(--theme-warning);
-  --color-neutral: var(--theme-carbon-gray);
-  --color-base-100: var(--theme-white);
-  --color-base-200: var(--theme-garage-gray);
-  --color-base-300: var(--theme-carbon-gray);
-  
-  --font-weight-bold: 700;
-  --font-weight-extrabold: 900;
-  
-  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  --shadow-2xl: 0 35px 60px -15px rgba(0, 0, 0, 0.6);
-  --shadow-exhaust: 0 0 40px rgba(255, 69, 0, 0.4);
-  
-  --animate-engine-rumble: engine-rumble 0.1s infinite;
-  --animate-exhaust-flow: exhaust-flow 3s infinite;
-}
-
-@keyframes engine-rumble {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-1px); }
-  75% { transform: translateX(1px); }
-}
-
-@keyframes exhaust-flow {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
-/* Base Styles */
 body {
   margin: 0;
-  min-width: 320px;
-  min-height: 100dvh;
-  overflow-x: hidden;
-  background: var(--theme-jet-black);
-  color: var(--theme-white);
+  min-height: 100vh;
+  background: #f9fafb;
+  color: #111827;
 }
 
-/* Premium Container */
-.container-moto {
+/* Minimal Container */
+.minimal-container {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding-inline: 1rem;
-  
-  @media (width >= 640px) {
-    padding-inline: 1.5rem;
-  }
-  
-  @media (width >= 1024px) {
-    padding-inline: 2rem;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .minimal-container {
+    padding: 0 2rem;
   }
 }
 
-/* Motorcycle Button */
-.btn-moto {
-  background: var(--gradient-exhaust);
+/* Simple Card */
+.simple-card {
+  background: white;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.simple-card:hover {
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Simple Button */
+.simple-btn {
+  background: #111827;
   color: white;
-  font-weight: 800;
-  padding: 1rem 2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: 0.5rem;
-  border: 2px solid var(--theme-jet-black);
-  position: relative;
-  overflow: hidden;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    transition: left 0.7s;
-  }
-  
-  &:hover::before {
-    left: 100%;
-  }
-  
-  &:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-exhaust);
-    border-color: var(--theme-white);
-  }
-  
-  &:active {
-    transform: translateY(-1px);
-  }
+  border: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
-/* Chrome Text Effect */
-.chrome-text {
-  background: var(--gradient-chrome);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+.simple-btn:hover {
+  background: #374151;
+  transform: translateY(-1px);
 }
 
-/* Motorcycle Card */
-.card-moto {
-  background: var(--theme-carbon-gray);
-  border-radius: 1rem;
-  border: 2px solid var(--theme-garage-gray);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 69, 0, 0.1) 50%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  
-  &:hover::before {
-    opacity: 1;
-  }
-  
-  &:hover {
-    border-color: var(--theme-engine-orange);
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-xl);
+/* Minimal Input */
+.minimal-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.minimal-input:focus {
+  outline: none;
+  border-color: #111827;
+  box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.1);
+}
+
+/* Section Spacing */
+.section-spacing {
+  padding: 3rem 0;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding: 5rem 0;
   }
 }
 
-/* Service Badge */
-.service-badge {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: var(--theme-jet-black);
-  border: 2px solid var(--theme-engine-orange);
-  border-radius: 12px;
-  transform: rotate(45deg);
-  
-  &::before {
-    content: '⚙️';
-    transform: rotate(-45deg);
-    font-size: 1.2em;
+/* Text Colors */
+.text-muted {
+  color: #6b7280;
+}
+
+.text-primary {
+  color: #111827;
+}
+
+/* Grid Utilities */
+.simple-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .simple-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+@media (min-width: 1024px) {
+  .simple-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
-::-webkit-scrollbar-track {
-  background: var(--theme-carbon-gray);
-  border-radius: 6px;
+/* Mobile Padding */
+.mobile-padding {
+  padding-bottom: 5rem;
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--gradient-exhaust);
-  border-radius: 6px;
-  border: 2px solid var(--theme-carbon-gray);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--theme-engine-orange);
-}
-
-/* Focus States */
-:focus-visible {
-  outline: 2px solid var(--theme-engine-orange);
-  outline-offset: 3px;
-}
-
-/* Touch Optimizations */
-.touch-moto {
-  min-height: 48px;
-  min-width: 48px;
-  -webkit-tap-highlight-color: transparent;
-  cursor: pointer;
-}
-
-/* Mobile Navigation Padding */
-.moto-mobile-padding {
-  padding-bottom: 80px;
-  
-  @media (width >= 768px) {
+@media (min-width: 768px) {
+  .mobile-padding {
     padding-bottom: 0;
   }
 }
 
-/* Chrome Border Effect */
-.chrome-border-effect {
-  position: relative;
-  border-radius: 1rem;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: inherit;
-    padding: 2px;
-    background: var(--gradient-chrome);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-  }
-}
-
-/* Loading Animation */
-.moto-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  
-  & div {
-    width: 8px;
-    height: 40px;
-    background: var(--gradient-exhaust);
-    animation: exhaust-flow 1.5s ease-in-out infinite;
-    
-    &:nth-child(2) { animation-delay: 0.1s; }
-    &:nth-child(3) { animation-delay: 0.2s; }
-    &:nth-child(4) { animation-delay: 0.3s; }
-  }
-}
-
-/* Motorcycle Gauge */
-.moto-gauge {
-  position: relative;
-  width: 100px;
-  height: 100px;
-  
-  .gauge-track {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: conic-gradient(var(--theme-engine-orange) 0% 80%, var(--theme-carbon-gray) 80% 100%);
-    border-radius: 50%;
-    mask: radial-gradient(transparent 50%, #000 51%);
-  }
-  
-  .gauge-needle {
-    position: absolute;
-    width: 4px;
-    height: 45px;
-    background: var(--theme-engine-orange);
-    bottom: 50%;
-    left: 50%;
-    transform-origin: bottom center;
-    transform: translateX(-50%) rotate(0deg);
-    transition: transform 0.5s ease;
-    border-radius: 2px;
-  }
-}
-
-/* Carbon Fiber Pattern */
-.carbon-pattern {
-  background-image: 
-    linear-gradient(45deg, rgba(255, 69, 0, 0.05) 25%, transparent 25%),
-    linear-gradient(-45deg, rgba(255, 69, 0, 0.05) 25%, transparent 25%),
-    linear-gradient(45deg, transparent 75%, rgba(255, 69, 0, 0.05) 75%),
-    linear-gradient(-45deg, transparent 75%, rgba(255, 69, 0, 0.05) 75%);
-  background-size: 20px 20px;
-  background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
-}
-
-/* Responsive Typography */
-.moto-heading {
-  @apply text-4xl md:text-5xl lg:text-6xl font-black tracking-tight;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.moto-subheading {
-  @apply text-xl md:text-2xl font-bold;
-  color: var(--theme-chrome-silver);
-}
-
-/* Headlight Beam Effect */
-.headlight-beam {
-  position: relative;
-  overflow: hidden;
-  
-  &::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at center, rgba(255, 204, 0, 0.2) 0%, transparent 70%);
-    pointer-events: none;
-  }
+/* Divider */
+.divider {
+  height: 1px;
+  background: #e5e7eb;
+  margin: 2rem 0;
 }

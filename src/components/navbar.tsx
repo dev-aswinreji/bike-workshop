@@ -1,42 +1,91 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import { Menu, X, Bike } from 'lucide-react'
 
-const Navbar: React.FC = () => {
-  const location = useLocation();
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const location = useLocation()
 
-  const isActive = (path: string) => location.pathname === path;
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/services', label: 'Services' },
+    { path: '/booking', label: 'Book' },
+    { path: '/contact', label: 'Contact' },
+  ]
 
   return (
-    <div className="navbar bg-primary text-primary-content sticky top-0 z-50">
-      <div className="navbar-start">
-        <div className="dropdown">
-          <label tabIndex={0} className="btn btn-ghost lg:hidden">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </label>
-          <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-primary rounded-box w-52">
-            <li><Link to="/" className={isActive('/') ? 'active' : ''}>Home</Link></li>
-            <li><Link to="/services" className={isActive('/services') ? 'active' : ''}>Services</Link></li>
-            <li><Link to="/booking" className={isActive('/booking') ? 'active' : ''}>Book Service</Link></li>
-            <li><Link to="/contact" className={isActive('/contact') ? 'active' : ''}>Contact</Link></li>
-          </ul>
-        </div>
-        <Link to="/" className="btn btn-ghost normal-case text-xl">BikeRepair Pro</Link>
-      </div>
-      <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
-          <li><Link to="/" className={isActive('/') ? 'active' : ''}>Home</Link></li>
-          <li><Link to="/services" className={isActive('/services') ? 'active' : ''}>Services</Link></li>
-          <li><Link to="/booking" className={isActive('/booking') ? 'active' : ''}>Book Service</Link></li>
-          <li><Link to="/contact" className={isActive('/contact') ? 'active' : ''}>Contact</Link></li>
-        </ul>
-      </div>
-      <div className="navbar-end">
-        <Link to="/admin" className="btn btn-ghost">Admin</Link>
-      </div>
-    </div>
-  );
-};
+    <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
+      <div className="minimal-container">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <Bike className="w-6 h-6" />
+            <span className="text-lg font-semibold">MotoFix</span>
+          </Link>
 
-export default Navbar;
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center gap-6">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`text-sm font-medium ${
+                  location.pathname === item.path
+                    ? 'text-gray-900'
+                    : 'text-gray-600 hover:text-gray-900'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              to="/admin"
+              className="text-sm font-medium text-gray-600 hover:text-gray-900"
+            >
+              Admin
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2"
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        {isOpen && (
+          <div className="md:hidden border-t border-gray-200">
+            <div className="py-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  onClick={() => setIsOpen(false)}
+                  className={`block px-4 py-2 text-sm ${
+                    location.pathname === item.path
+                      ? 'text-gray-900 bg-gray-50'
+                      : 'text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Link
+                to="/admin"
+                onClick={() => setIsOpen(false)}
+                className="block px-4 py-2 text-sm text-gray-600 hover:bg-gray-50"
+              >
+                Admin
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </nav>
+  )
+}
+
+export default Navbar

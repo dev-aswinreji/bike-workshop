@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import MotoNavbar from './components/motoNavbar'
-import MotoFooter from './components/motoFooter'
+import SimpleNavbar from './components/navbar'
+import SimpleFooter from './components/footer'
 import Home from './pages/home'
 import Services from './pages/services'
 import Booking from './pages/booking'
@@ -11,8 +11,8 @@ import './index.css'
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-black text-white">
-        <MotoNavbar />
+      <div className="min-h-screen bg-gray-50">
+        <SimpleNavbar />
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -22,7 +22,7 @@ function App() {
             <Route path="/admin" element={<Admin />} />
           </Routes>
         </main>
-        <MotoFooter />
+        <SimpleFooter />
       </div>
     </Router>
   )
